@@ -7,10 +7,13 @@ window.addEventListener("load" , function(){
 		preload : function () {
 			this.hero = game.load.image('hero', 'assets/player.png');
 			this.bullet = game.load.image('bullet', 'assets/bullet.png');
+			game.load.image('wallV', 'assets/wallVertical.png' );
+			game.load.image('wallH', 'assets/wallHorizontal.png' );
 		},
 		
 		create : function() {
-			this.hero = game.add.sprite(20, 20, 'hero');
+			this.hero = game.add.sprite(game.world.centerX, game.world.centerY, 'hero');
+			this.wallLeft = game.add.sprite(0, 10, 'wallV');
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 			game.physics.arcade.enable(this.hero);
 			
@@ -20,7 +23,7 @@ window.addEventListener("load" , function(){
 		    bullets = game.add.group();
 		    bullets.enableBody = true;
 		    bullets.physicsBodyType = Phaser.Physics.ARCADE;
-		    bullets.createMultiple(30, 'bullet');
+		    bullets.createMultiple(40, 'bullet');
 		    bullets.setAll('anchor.x', -0.5);
 		    bullets.setAll('anchor.y', 1);
 		    bullets.setAll('outOfBoundsKill', true);
@@ -37,15 +40,15 @@ window.addEventListener("load" , function(){
 		movePlayer: function() {
 			
 			if (this.cursor.left.isDown ) {
-				this.hero.body.velocity.x = -200; 
+				this.hero.body.velocity.x = -400; 
 		    }  
 			else if (this.cursor.right.isDown) { 
-				this.hero.body.velocity.x = 200;
+				this.hero.body.velocity.x = 400;
 			} else if (this.cursor.up.isDown) {
-				this.hero.body.velocity.y = -200;
+				this.hero.body.velocity.y = -400;
 				
 			}  else if (this.cursor.down.isDown) {
-				this.hero.body.velocity.y = 200;
+				this.hero.body.velocity.y = 400;
 				
 			}
 			else {
@@ -71,7 +74,7 @@ window.addEventListener("load" , function(){
 		        {
 		            //  And fire it
 		            bullet.reset(this.hero.x, this.hero.y + 8);
-		            bullet.body.velocity.y = -400;
+		            bullet.body.velocity.y = -800;
 		            bulletTime = game.time.now + 200;
 		        }
 		    }
@@ -87,7 +90,7 @@ window.addEventListener("load" , function(){
 		
 	}
 
-	var game = new Phaser.Game(400, 300, Phaser.AUTO, 'gameDiv');
+	var game = new Phaser.Game(800, 480, Phaser.AUTO, 'gameDiv');
 
 	game.state.add( 'main', mainState );
 	game.state.start('main');
