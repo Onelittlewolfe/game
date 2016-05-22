@@ -13,9 +13,16 @@ window.addEventListener("load" , function(){
 		
 		create : function() {
 			this.hero = game.add.sprite(game.world.centerX, game.world.centerY, 'hero');
-			this.wallLeft = game.add.sprite(0, 10, 'wallV');
+			this.wallLeft = game.add.sprite(0, 0, 'wallV');
+			
 			game.physics.startSystem(Phaser.Physics.ARCADE);
+			
 			game.physics.arcade.enable(this.hero);
+			game.physics.arcade.enable(this.wallLeft);
+			
+			this.wallLeft.body.immovable = true;
+			
+			this.wallLeft.scale.setTo(1.5, 5);
 			
 			this.cursor = game.input.keyboard.createCursorKeys();
 			fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -31,6 +38,10 @@ window.addEventListener("load" , function(){
 		},
 	
 		update: function() {
+			
+
+			game.physics.arcade.collide(this.hero, this.wallLeft);
+			
 		    this.hero.body.velocity.x = 0;
 		    this.hero.body.velocity.y = 0;
 			
