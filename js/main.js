@@ -87,10 +87,39 @@ window.addEventListener("load" , function(){
 		},
 		
 		takeCoin: function(hero, coin) {
-			this.coin.kill();
+			// this.coin.kill();
+			
+			var newX = game.rnd.integerInRange(10, game.world.width - 20); 
+			var newY = game.rnd.integerInRange(10, game.world.height - 20);
+			
+			
 			
 			this.score += 5
 			this.scoreLabel.text = 'score: ' + this.score; 
+			this.updateCoin();
+		},
+		
+		updateCoin: function(){
+		
+			var coinPosition = [
+				{x:200, y: 50}, {x:300, y:120},
+				{x:500, y: 80}, {x:300, y:430},
+				{x:200, y: 200}, {x:120, y:300},
+			];
+			
+			
+			for (var i = 0; i < coinPosition.length; i++  ){
+				if( coinPosition[i].x == this.coin.x  ) {
+					coinPosition.splice(i, 1);
+				}
+				
+			}
+			
+			var newPosition = coinPosition[ game.rnd.integerInRange(0, coinPosition.length-1)];
+			this.coin.reset(newPosition.x, newPosition.y );
+			console.log(newPosition.x, newPosition.y )
+			
+			
 		},
 		
 		movePlayer: function() {
