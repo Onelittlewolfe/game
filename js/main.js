@@ -7,6 +7,7 @@ window.addEventListener("load" , function(){
 		preload : function () {
 			this.hero = game.load.image('hero', 'assets/player.png');
 			this.bullet = game.load.image('bullet', 'assets/bullet.png');
+			this.coin = game.load.image('coin', 'assets/coin.png');
 			game.load.image('wallV', 'assets/wallVertical.png' );
 			game.load.image('wallH', 'assets/wallHorizontal.png' );
 		},
@@ -48,10 +49,19 @@ window.addEventListener("load" , function(){
 		
 		create : function() {
 			this.hero = game.add.sprite(game.world.centerX, game.world.centerY, 'hero');
+			this.coin = game.add.sprite(250, 250, 'coin');
+			
+			this.scoreLabel = game.add.text(50, 50, "this is the score", 
+			{ font: '18px Arial' , fill: '#ffffff' });
+			
+			this.score = 0;
+			
+			this.coin.anchor.setTo(0.5, 0.5);
 			
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 			
 			game.physics.arcade.enable(this.hero);
+			game.physics.arcade.enable(this.coin);
 			
 			this.cursor = game.input.keyboard.createCursorKeys();
 			fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -69,9 +79,18 @@ window.addEventListener("load" , function(){
 			
 			this.movePlayer();
 			
+			game.physics.arcade.overlap(this.hero, this.coin, this.takeCoin, null, this );
+			
 			if ( !this.hero.inWorld ) { 
 				this.playerDie();
 			}
+		},
+		
+		takeCoin: function(hero, coin) {
+			this.coin.kill();
+			
+			this.score += 5
+			this.scoreLabel.text = 'score: ' + this.score; 
 		},
 		
 		movePlayer: function() {
